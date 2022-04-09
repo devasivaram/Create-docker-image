@@ -1,4 +1,4 @@
-# Create docker image and add it to docker hub
+# Performing flask application for creating docker image
 
 ## Description
 
