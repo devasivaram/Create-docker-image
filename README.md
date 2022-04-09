@@ -123,9 +123,26 @@ docker image tag devanandts/dockertestimage:custom devanandts/dockertestimage:la
 Now, we can push the image to docker hub
 
 ~~~sh
-docker image push devanandts/dockertestiamge:custom
+docker image push devanandts/dockertestimage:custom
 docker image push devanandts/dockertestimage:latest
 ~~~
+
+>Result
+>
+![image](https://user-images.githubusercontent.com/100773863/162554612-963b1175-5b54-4577-abfa-34644ce47b34.png)
+![image](https://user-images.githubusercontent.com/100773863/162554635-716ed820-76d4-47f1-b723-dc572dc4eabe.png)
+
+Now we can pull this image for creating docker container!
+
+## Conclusion
+
+This is how an docker custom image is created and pushed to docker hub. Please contact me when you encounter any difficulty error while using this terrform code. Thank you and have a great day!
+
+
+### ⚙️ Connect with Me
+<p align="center">
+<a href="https://www.instagram.com/dev_anand__/"><img src="https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white"/></a>
+<a href="https://www.linkedin.com/in/dev-anand-477898201/"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"/></a>
 
 
 
