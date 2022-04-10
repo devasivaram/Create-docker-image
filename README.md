@@ -1,8 +1,8 @@
-# Performing flask application for creating docker image
+# Performing flask application for creating secure docker image
 
 ## Description
 
-We are creating an custom docker image with help of existing docker image and we are creating an container using the custom/created docker image. Let's move on to the process.
+Here we create a secure docker image with user, so that if we check the process/container it will show as that user not as root. Let's move to the process
 
 ## Installation
 
@@ -20,7 +20,7 @@ Please exit from the instance and login back to reflect the above changes
 
 ## Procedure
 
-## Create directory and files required
+## 1. Create directory and files required
 
 ~~~sh
 mkdir flask-app
@@ -28,7 +28,7 @@ cd flask-app/
 touch app.py requirements.txt Dockerfile
 ~~~
 
-## Add code to app.py
+## 2. Add code to app.py
 
 ~~~sh
 vim app.py
@@ -47,7 +47,7 @@ if __name__ == "__main__":
   app.run(host='0.0.0.0',port=5000)
 ~~~
 
-## Add to requirements.txt
+## 3. Add to requirements.txt
 
 ~~~sh
 vim requirements.txt
@@ -57,7 +57,7 @@ vim requirements.txt
 flask
 ~~~
 
-## Create Dockerfile 
+##4.  Create Dockerfile 
 
 ~~~sh
 vim Dockerfile
@@ -66,34 +66,43 @@ vim Dockerfile
 > Add these for building image
 
 ~~~
-
 FROM alpine:3.8
+    
+ENV FLASK_PATH your_file_path
 
-RUN  mkdir  /var/flaskapp
+ENV FLASK_USER Your_user_name
 
-WORKDIR  /var/flaskapp
+RUN adduser  -h $FLASK_PATH -s /bin/sh -D  $FLASK_USER
 
-COPY  .   .
+WORKDIR  $FLASK_PATH
 
-RUN  apk update && apk add --no-cache python3
+COPY  .  .
 
-RUN  pip3 install -r requirements.txt
+RUN chown -R $FLASK_USER:$FLASK_USER $FLASK_PATH
+
+RUN apk update && apk add python3 --no-cache
+
+RUN pip3 install -r requirements.txt
+
+USER $FLASK_USER
 
 EXPOSE 5000
 
-CMD ["python3" , "app.py"]
+ENTRYPOINT ["python3"]
+
+CMD ["app.py"]
 ~~~
 
 **Lets start to build the docker image**
 
-### To build docker image 
+## 5. To build docker image and push to hub
 
 ~~~sh
-docker image build -t dockertest:1 .
+docker image build -t flasktest:1 .
 ~~~
 >Result
 
-![image](https://user-images.githubusercontent.com/100773863/162553606-604eabbf-adb8-4274-b058-107a25263cb7.png)
+![image](https://user-images.githubusercontent.com/100773863/162606270-f71639a0-a5f8-4559-8dd7-06fe74dc79a1.png)
 
 
 ## Pushing custom image to Docker
@@ -111,32 +120,48 @@ docker login
 **We will rename the custom image (dockerimage:1) to desired one, here I rename it to:**
 
 ~~~sh
-docker image tag dockerimage:1 devanandts/dockertestimage:custom
-docker image tag devanandts/dockertestimage:custom devanandts/dockertestimage:latest
+docker image tag flasktest:1 devanandts/flasktest:custom
 ~~~
 
 >Result
 
-![image](https://user-images.githubusercontent.com/100773863/162554522-dba95987-9443-4b2b-8a62-22ed06915082.png)
+![image](https://user-images.githubusercontent.com/100773863/162606366-2625be81-aef2-4e2a-877a-8f5630658a9a.png)
 
 
 Now, we can push the image to docker hub
 
 ~~~sh
-docker image push devanandts/dockertestimage:custom
-docker image push devanandts/dockertestimage:latest
+docker image push devanandts/flasktest:custom
 ~~~
 
 >Result
 >
-![image](https://user-images.githubusercontent.com/100773863/162554612-963b1175-5b54-4577-abfa-34644ce47b34.png)
-![image](https://user-images.githubusercontent.com/100773863/162554635-716ed820-76d4-47f1-b723-dc572dc4eabe.png)
+![image](https://user-images.githubusercontent.com/100773863/162606441-cf1d231a-9893-4cf6-b148-cb87d26510e2.png)
+![image](https://user-images.githubusercontent.com/100773863/162606454-b6771172-f061-4577-9947-894594e2551b.png)
 
-Now we can pull this image for creating docker container!
+
+## 6. Testing
+
+Now we can pull this image for creating docker container! Let's try to pull this image in [play-with-docker]() :
+
+~~~sh
+docker image pull devanandts/flasktest:custom
+docker container run --name web -d -p 80:5000 devanandts/flasktest:custom
+~~~
+
+Result:
+> ![image](https://user-images.githubusercontent.com/100773863/162606564-3dfec48f-c5e7-4af2-ba37-ea04bc846f56.png)
+
+> ![image](https://user-images.githubusercontent.com/100773863/162606685-bd551db6-2dac-4c7c-b556-1cfca13266ce.png)
+
+> ![image](https://user-images.githubusercontent.com/100773863/162606710-b3377000-9cbd-4b0b-8112-13b46c63fb6c.png)
+
+
+
 
 ## Conclusion
 
-This is how an docker custom image is created and pushed to docker hub. Please contact me when you encounter any difficulty error while using this terrform code. Thank you and have a great day!
+This is how a secure docker custom image is created and pushed to docker hub. Please contact me when you encounter any difficulty error while using this terrform code. Thank you and have a great day!
 
 
 ### ⚙️ Connect with Me
