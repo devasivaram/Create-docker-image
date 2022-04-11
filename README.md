@@ -150,9 +150,9 @@ docker container run --name web -d -p 80:5000 devanandts/flasktest:custom
 ~~~
 
 Result:
-> ![image](https://user-images.githubusercontent.com/100773863/162606564-3dfec48f-c5e7-4af2-ba37-ea04bc846f56.png)
+> ![image](https://user-images.githubusercontent.com/100773863/162675482-60b34a46-58f4-40fa-98a9-2101899a9df6.png)
 
-> ![image](https://user-images.githubusercontent.com/100773863/162606685-bd551db6-2dac-4c7c-b556-1cfca13266ce.png)
+> ![image](https://user-images.githubusercontent.com/100773863/162675549-b87a4640-0c58-4864-bf88-b485bca71218.png)
 
 > ![image](https://user-images.githubusercontent.com/100773863/162606710-b3377000-9cbd-4b0b-8112-13b46c63fb6c.png)
 
